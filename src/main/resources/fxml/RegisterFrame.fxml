@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mgusev.chat.client.view.RegisterController">
+   <children>
+      <TextField fx:id="nickField" layoutX="227.0" layoutY="99.0" />
+      <TextField fx:id="loginField" layoutX="227.0" layoutY="150.0" />
+      <PasswordField fx:id="passwordField" layoutX="227.0" layoutY="203.0" />
+      <Label layoutX="182.0" layoutY="103.0" text="Имя" />
+      <Label layoutX="177.0" layoutY="154.0" text="Логин" />
+      <Label layoutX="169.0" layoutY="207.0" text="Пароль" />
+      <Button fx:id="backButton" layoutX="327.0" layoutY="255.0" mnemonicParsing="false" onAction="#backButtonAction" text="Назад" />
+      <Button fx:id="registerButton" layoutX="227.0" layoutY="255.0" mnemonicParsing="false" onAction="#registerButtonAction" text="Регистрация" />
+   </children>
+</Pane>

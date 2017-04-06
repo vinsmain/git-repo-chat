@@ -1,0 +1,9 @@
+ru\mgusev\chat\server\ChatServerInitializer.class
+ru\mgusev\chat\client\ChatClient.class
+ru\mgusev\chat\server\ChatServerHandler.class
+ru\mgusev\chat\client\ChatClientFrame.class
+ru\mgusev\chat\client\ChatClientInitializer.class
+ru\mgusev\chat\client\view\MessageOverviewController.class
+ru\mgusev\chat\client\ChatClientHandler.class
+ru\mgusev\chat\client\model\ChatMessage.class
+ru\mgusev\chat\server\ChatServer.class
