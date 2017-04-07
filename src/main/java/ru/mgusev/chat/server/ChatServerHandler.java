@@ -24,7 +24,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
         for (Channel channel : channels) {
             channel.writeAndFlush(serverMessage);
         }
-
     }
 
     @Override
@@ -64,7 +63,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
         return channels;
     }
 
-    public static void addChannel(ChannelGroup channel) {
+    public static void addChannel(Channel channel) {
         channels.add(channelHandlerContext.channel());
     }
 }
