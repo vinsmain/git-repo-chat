@@ -63,6 +63,8 @@ public class AuthController {
             mainApp.setNickName(authResult.getNickName());
             mainApp.setMainFrame(mainApp.getChatFrame());
         } else {
+            mainApp.getChatClient().getChannel().disconnect();
+            MessageOverviewController.setIsConnected(false);
             setErrorLabel("Неверные данные для авторизации");
             disableElements(false);
         }
