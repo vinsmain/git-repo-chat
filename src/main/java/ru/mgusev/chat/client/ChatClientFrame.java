@@ -1,5 +1,6 @@
 package ru.mgusev.chat.client;
 
+import io.netty.channel.ChannelFuture;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
@@ -51,11 +52,11 @@ public class ChatClientFrame extends Application {
         }
     }
 
-    public static ChatClient getChatClient() {
+    public ChatClient getChatClient() {
         return chatClient;
     }
 
-    public static void connect() {
+    public void connect() {
         if (!MessageOverviewController.isConnected()) {
             Service<Void> connectService = new Service<Void>() {
                 @Override
@@ -63,7 +64,7 @@ public class ChatClientFrame extends Application {
                     return new Task<Void>() {
                         @Override
                         protected Void call() throws Exception {
-                            chatClient = new ChatClient("localhost", 8000);
+                            chatClient = new ChatClient("localhost", 8000, authController.getMainApp());
                             //ChatClientFrame.setChatClient(chatClient);
                             chatClient.run();
                             return null;
@@ -191,4 +192,6 @@ public class ChatClientFrame extends Application {
     public static AuthController getAuthController() {
         return authController;
     }
+
+
 }

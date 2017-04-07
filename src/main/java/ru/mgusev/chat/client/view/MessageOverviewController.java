@@ -32,7 +32,7 @@ public class MessageOverviewController {
     private void sendMessage() {
         if (isConnected && !sendMessageArea.getText().trim().equals("")) {
             ChatMessage msg = new ChatMessage(new Date(), "User1", sendMessageArea.getText());
-            ChatClientFrame.getChatClient().getChannel().writeAndFlush(msg);
+            mainApp.getChatClient().getChannel().writeAndFlush(msg);
             sendMessageArea.setText("");
         }
     }
@@ -40,9 +40,10 @@ public class MessageOverviewController {
     @FXML
     public void disconnect() {
         if (isConnected) {
-            ChatClientFrame.getChatClient().getChannel().disconnect();
+            mainApp.getChatClient().getChannel().disconnect();
             isConnected = false;
             mainApp.setMainFrame(mainApp.getAuthFrame());
+            mainApp.getAuthController().disableElements(false);
         }
     }
 
@@ -50,7 +51,7 @@ public class MessageOverviewController {
     private void startPrintingMessage() {
         time = System.currentTimeMillis();
         if (!isPrinting && isConnected) {
-            ChatClientFrame.getChatClient().getChannel().writeAndFlush(new StartPrintingMessage());
+            mainApp.getChatClient().getChannel().writeAndFlush(new StartPrintingMessage());
             isPrinting = true;
         }
     }

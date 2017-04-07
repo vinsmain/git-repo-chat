@@ -37,7 +37,7 @@ public class RegisterController {
     private void registerButtonAction() {
         //System.out.println("111");
         //System.out.println(nickField.getText() + loginField.getText() + passwordField.getText());
-        ChatClientFrame.getChatClient().getChannel().writeAndFlush(new RegisterMessage(nickField.getText(), loginField.getText(), passwordField.getText()));
+        mainApp.getChatClient().getChannel().writeAndFlush(new RegisterMessage(nickField.getText(), loginField.getText(), passwordField.getText()));
         //System.out.println("222");
     }
 
