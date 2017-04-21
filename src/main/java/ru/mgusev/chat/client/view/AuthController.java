@@ -14,7 +14,6 @@ import java.util.concurrent.CountDownLatch;
 
 public class AuthController {
 
-    //private ChatClient chatClient;
     private ChatClientFrame mainApp;
     private CountDownLatch cdl;
 
@@ -40,22 +39,19 @@ public class AuthController {
 
     @FXML
     private void authButtonAction() {
+        disableElements(true);
         cdl = new CountDownLatch(1);
         mainApp.connect();
-        disableElements(true);
 
-        //ChannelFuture future = mainApp.connect();
         try {
             cdl.await();
+            mainApp.getChatClient().getChannelFuture().addListener(channelFuture -> {
+                mainApp.getChatClient().getChannel().writeAndFlush(new AuthMessage(loginField.getText(), passwordField.getText()));
+                setErrorLabel("");
+            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        mainApp.getChatClient().getChannelFuture().addListener(channelFuture -> {
-          //  if (channelFuture.isSuccess()) {
-                mainApp.getChatClient().getChannel().writeAndFlush(new AuthMessage(loginField.getText(), passwordField.getText()));
-                setErrorLabel("");
-          //  } else System.out.println("00000");
-        });
     }
 
     public void authorisation(AuthResult authResult) {

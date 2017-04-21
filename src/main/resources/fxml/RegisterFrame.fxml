@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -11,7 +12,8 @@
       <Label layoutX="182.0" layoutY="103.0" text="Имя" />
       <Label layoutX="177.0" layoutY="154.0" text="Логин" />
       <Label layoutX="169.0" layoutY="207.0" text="Пароль" />
-      <Button fx:id="backButton" layoutX="327.0" layoutY="255.0" mnemonicParsing="false" onAction="#backButtonAction" text="Назад" />
-      <Button fx:id="registerButton" layoutX="227.0" layoutY="255.0" mnemonicParsing="false" onAction="#registerButtonAction" text="Регистрация" />
+      <Label fx:id="errorLabel" layoutX="227.0" layoutY="234.0" />
+      <Button fx:id="backButton" layoutX="327.0" layoutY="257.0" mnemonicParsing="false" onAction="#backButtonAction" text="Назад" />
+      <Button fx:id="registerButton" layoutX="227.0" layoutY="257.0" mnemonicParsing="false" onAction="#registerButtonAction" text="Регистрация" />
    </children>
 </Pane>

@@ -3,6 +3,8 @@ package ru.mgusev.chat.server;
 import ru.mgusev.chat.client.model.AuthMessage;
 import ru.mgusev.chat.client.model.AuthResult;
 import ru.mgusev.chat.client.model.RegisterMessage;
+import ru.mgusev.chat.client.model.RegisterResult;
+
 import java.sql.*;
 
 public class DataBaseHandler {
@@ -29,15 +31,17 @@ public class DataBaseHandler {
         }
     }
 
-    public static void registration(RegisterMessage registerMessage) {
+    public static RegisterResult registration(RegisterMessage registerMessage) {
         try {
             psRegistration.setString(1, registerMessage.getNickName());
             psRegistration.setString(2, registerMessage.getLogin());
             psRegistration.setString(3, registerMessage.getPassword());
             psRegistration.executeUpdate();
+            System.out.println("1");
+            return new RegisterResult(true, "Пользователь " + registerMessage.getNickName() + " успешно зарегистрирован");
         } catch (SQLException e) {
-            System.out.println("Ошибка регистрации");
-            //e.printStackTrace();
+            System.out.println("012");
+            return new RegisterResult(false, "Пользователь с указанными данными уже существует");
         }
     }
 

@@ -193,5 +193,7 @@ public class ChatClientFrame extends Application {
         return authController;
     }
 
-
+    public static RegisterController getRegisterController() {
+        return registerController;
+    }
 }

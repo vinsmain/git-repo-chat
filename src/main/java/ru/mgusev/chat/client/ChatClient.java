@@ -36,6 +36,7 @@ public class ChatClient {
 
             channel = bootstrap.connect(host, port).sync();
             MessageOverviewController.setIsConnected(true);
+            chatClientFrame.getRegisterController().cdlDown();
             chatClientFrame.getAuthController().cdlDown();
             System.out.println("1");
 
