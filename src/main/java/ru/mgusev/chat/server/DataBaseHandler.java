@@ -37,10 +37,10 @@ public class DataBaseHandler {
             psRegistration.setString(2, registerMessage.getLogin());
             psRegistration.setString(3, registerMessage.getPassword());
             psRegistration.executeUpdate();
-            System.out.println("1");
             return new RegisterResult(true, "Пользователь " + registerMessage.getNickName() + " успешно зарегистрирован");
         } catch (SQLException e) {
-            System.out.println("012");
+            disconnect();
+            connect();
             return new RegisterResult(false, "Пользователь с указанными данными уже существует");
         }
     }
@@ -52,6 +52,8 @@ public class DataBaseHandler {
             ResultSet authResultSet = psAuthorisation.executeQuery();
             return new AuthResult(authResultSet.getString(2));
         } catch (SQLException e) {
+            disconnect();
+            connect();
             return new AuthResult(null);
         }
     }

@@ -41,6 +41,7 @@ public class AuthController {
     private void authButtonAction() {
         disableElements(true);
         cdl = new CountDownLatch(1);
+        mainApp.setTryAuthOrReg(true);
         mainApp.connect();
 
         try {

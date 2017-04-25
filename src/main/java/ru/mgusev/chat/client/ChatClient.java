@@ -7,7 +7,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import ru.mgusev.chat.client.model.StopPrintingMessage;
-import ru.mgusev.chat.client.view.AuthController;
 import ru.mgusev.chat.client.view.MessageOverviewController;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -36,9 +35,8 @@ public class ChatClient {
 
             channel = bootstrap.connect(host, port).sync();
             MessageOverviewController.setIsConnected(true);
-            chatClientFrame.getRegisterController().cdlDown();
-            chatClientFrame.getAuthController().cdlDown();
-            System.out.println("1");
+            if (chatClientFrame.isTryAuthOrReg()) chatClientFrame.getAuthController().cdlDown();
+            else chatClientFrame.getRegisterController().cdlDown();
 
             ScheduledFuture<?> future = channel.channel().eventLoop().scheduleAtFixedRate(
                 (Runnable) () -> {
@@ -47,7 +45,6 @@ public class ChatClient {
                         MessageOverviewController.setIsPrinting(false);
                     }
                 }, 100, 100, TimeUnit.MILLISECONDS);
-            System.out.println("2");
             channel.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

@@ -1,6 +1,5 @@
 package ru.mgusev.chat.client;
 
-import io.netty.channel.ChannelFuture;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
@@ -14,7 +13,6 @@ import javafx.stage.Stage;
 import ru.mgusev.chat.client.view.AuthController;
 import ru.mgusev.chat.client.view.MessageOverviewController;
 import ru.mgusev.chat.client.view.RegisterController;
-
 import java.io.IOException;
 
 public class ChatClientFrame extends Application {
@@ -25,6 +23,7 @@ public class ChatClientFrame extends Application {
     private Pane registerFrame;
     private AnchorPane chatFrame;
     private String nickName;
+    private boolean tryAuthOrReg = true; //true - auth, false - reg
     private static ChatClient chatClient;
     private static MessageOverviewController controller;
     private static AuthController authController;
@@ -103,7 +102,6 @@ public class ChatClientFrame extends Application {
             // Даём контроллеру доступ к главному приложению.
             authController = loader.getController();
             authController.setMainApp(this);
-            //authController.setChatClient(chatClient);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,12 +113,8 @@ public class ChatClientFrame extends Application {
             loader.setLocation(getClass().getResource("/fxml/RegisterFrame.fxml"));
             registerFrame = loader.load();
 
-            // Помещаем сведения об адресатах в центр корневого макета.
-            //rootLayout.setCenter(authFrame);
-            // Даём контроллеру доступ к главному приложению.
             registerController = loader.getController();
             registerController.setMainApp(this);
-            //registerController.setChatClient(chatClient);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,13 +126,8 @@ public class ChatClientFrame extends Application {
             loader.setLocation(getClass().getResource("/fxml/ChatFrame.fxml"));
             chatFrame = loader.load();
 
-            // Помещаем сведения об адресатах в центр корневого макета.
-            //rootLayout.setCenter(chatFrame);
-            //chatFrame.setVisible(false);
-            // Даём контроллеру доступ к главному приложению.
             controller = loader.getController();
             controller.setMainApp(this);
-            //controller.setChatClient(chatClient);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -195,5 +184,13 @@ public class ChatClientFrame extends Application {
 
     public static RegisterController getRegisterController() {
         return registerController;
+    }
+
+    public void setTryAuthOrReg(boolean tryAuthOrReg) {
+        this.tryAuthOrReg = tryAuthOrReg;
+    }
+
+    public boolean isTryAuthOrReg() {
+        return tryAuthOrReg;
     }
 }
