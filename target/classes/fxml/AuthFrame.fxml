@@ -5,13 +5,13 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mgusev.chat.client.view.AuthController">
    <children>
-      <Label fx:id="errorLabel" layoutX="226.0" layoutY="94.0" textFill="RED" />
+      <Label fx:id="errorLabel" layoutX="226.0" layoutY="94.0" />
       <TextField fx:id="loginField" layoutX="226.0" layoutY="124.0" />
       <PasswordField fx:id="passwordField" layoutX="226.0" layoutY="177.0" />
       <Label layoutX="176.0" layoutY="128.0" text="Логин" />
       <Label layoutX="168.0" layoutY="181.0" text="Пароль" />
-      <Button fx:id="authButton" layoutX="226.0" layoutY="229.0" mnemonicParsing="false" onAction="#authButtonAction" text="Войти" />
-      <Button fx:id="registerButton" layoutX="290.0" layoutY="229.0" mnemonicParsing="false" onAction="#registerButtonAction" text="Регистрация" />
-
+      <Button fx:id="authButton" layoutX="224.0" layoutY="241.0" mnemonicParsing="false" onAction="#authButtonAction" text="Войти" />
+      <Button fx:id="registerButton" layoutX="288.0" layoutY="241.0" mnemonicParsing="false" onAction="#registerButtonAction" text="Регистрация" />
+      <CheckBox fx:id="rememberCB" layoutX="226.0" layoutY="212.0" mnemonicParsing="false" text="Запомнить меня" />
    </children>
 </Pane>

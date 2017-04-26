@@ -42,6 +42,8 @@ public class RegisterController {
     @FXML
     private void backButtonAction() {
         mainApp.setMainFrame(mainApp.getAuthFrame());
+        errorLabel.setText("");
+        clearFields();
     }
 
     @FXML
@@ -61,18 +63,21 @@ public class RegisterController {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        } else setErrorLabel("Поля заполнены некорректно:\nдопускается использовать только латинский алфавит и цифры");
+        } else {
+            setErrorLabel("Поля заполнены некорректно");
+            errorLabel.setTextFill(Color.RED);
+        }
     }
 
     public void registration(RegisterResult registerResult) {
         if (registerResult.isStatus()) {
+            setErrorLabel(registerResult.getMessage());
             errorLabel.setTextFill(Color.BLUE);
+            clearFields();
+        } else {
             setErrorLabel(registerResult.getMessage());
             errorLabel.setTextFill(Color.RED);
-            nickField.clear();
-            loginField.clear();
-            passwordField.clear();
-        } else setErrorLabel(registerResult.getMessage());
+        }
 
         disableElements(false);
         mainApp.getChatClient().getChannel().disconnect();
@@ -107,5 +112,10 @@ public class RegisterController {
         Pattern p = Pattern.compile("^[A-Za-z0-9]{5,10}$");
         Matcher m = p.matcher(text);
         return m.matches();
+    }
+    private void clearFields() {
+        nickField.clear();
+        loginField.clear();
+        passwordField.clear();
     }
 }

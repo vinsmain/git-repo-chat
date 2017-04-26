@@ -2,10 +2,7 @@ package ru.mgusev.chat.client.view;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import ru.mgusev.chat.client.ChatClientFrame;
 import ru.mgusev.chat.client.model.AuthMessage;
 import ru.mgusev.chat.client.model.AuthResult;
@@ -27,6 +24,9 @@ public class AuthController {
     private TextField passwordField = new PasswordField();
 
     @FXML
+    private CheckBox rememberCB = new CheckBox();
+
+    @FXML
     private Button authButton = new Button();
 
     @FXML
@@ -35,6 +35,7 @@ public class AuthController {
     @FXML
     private void registerButtonAction() {
         mainApp.setMainFrame(mainApp.getRegisterFrame());
+        errorLabel.setText("");
     }
 
     @FXML
@@ -59,6 +60,10 @@ public class AuthController {
         if (authResult.getNickName() != null) {
             mainApp.setNickName(authResult.getNickName());
             mainApp.setMainFrame(mainApp.getChatFrame());
+            if (rememberCB.isSelected()) {
+                passwordField.clear();
+                errorLabel.setText("");
+            } else clearFields();
         } else {
             mainApp.getChatClient().getChannel().disconnect();
             MessageOverviewController.setIsConnected(false);
@@ -88,5 +93,11 @@ public class AuthController {
 
     public void cdlDown() {
         cdl.countDown();
+    }
+
+    private void clearFields() {
+        loginField.clear();
+        passwordField.clear();
+        errorLabel.setText("");
     }
 }
