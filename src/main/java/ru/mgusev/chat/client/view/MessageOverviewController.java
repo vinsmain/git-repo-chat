@@ -31,7 +31,7 @@ public class MessageOverviewController {
     @FXML
     private void sendMessage() {
         if (isConnected && !sendMessageArea.getText().trim().equals("")) {
-            ChatMessage msg = new ChatMessage(new Date(), "User1", sendMessageArea.getText());
+            ChatMessage msg = new ChatMessage(new Date(), mainApp.getNickName(), sendMessageArea.getText());
             mainApp.getChatClient().getChannel().writeAndFlush(msg);
             sendMessageArea.setText("");
         }
