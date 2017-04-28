@@ -10,7 +10,6 @@ public class ServerAuthHandler extends SimpleChannelInboundHandler<AuthMessage> 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, AuthMessage authMessage) throws Exception {
         AuthResult authResult = DataBaseHandler.authorisation(authMessage);
-        System.out.println(authResult.getNickName());
         if (authResult.getNickName() != null) ChatServerHandler.addChannel(channelHandlerContext.channel(), authResult);
         channelHandlerContext.channel().writeAndFlush(authResult);
     }

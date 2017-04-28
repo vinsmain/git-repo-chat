@@ -10,34 +10,27 @@ import ru.mgusev.chat.client.model.AuthResult;
 import ru.mgusev.chat.client.model.ChatMessage;
 import ru.mgusev.chat.client.model.ServerMessage;
 import java.util.Date;
-import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-    private static final Vector<AuthResult> users = new Vector<>();
-    private static ChannelHandlerContext channelHandlerContext;
+    private static ConcurrentHashMap<Channel, String> usersHM= new ConcurrentHashMap<>();
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        //Channel incoming = ctx.channel();
-        channelHandlerContext = ctx;
-        /*ServerMessage serverMessage = new ServerMessage(new Date(), "[SERVER] - " + incoming.remoteAddress() + " has joined!");
-        System.out.println(serverMessage.getServerMessage());
-        for (Channel channel : channels) {
-            channel.writeAndFlush(serverMessage);
-        }*/
+
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        //Channel incoming = ctx.channel();
-        //ServerMessage serverMessage = new ServerMessage(new Date(), "[SERVER] - " + incoming.remoteAddress() + " has left!");
-       // System.out.println(serverMessage.getServerMessage());
-        channels.remove(ctx.channel());
-        //users.remove();
-        for (Channel channel : channels) {
-            channel.writeAndFlush(new ServerMessage(new Date(), "Пользователь отключается"));
+        String logoutUser = usersHM.get(ctx.channel());
+        if (logoutUser != null) {
+            channels.remove(ctx.channel());
+            usersHM.remove(ctx.channel());
+            for (Channel channel : channels) {
+                channel.writeAndFlush(new ServerMessage(new Date(), "Пользователь " + logoutUser + " отключается"));
+            }
         }
     }
 
@@ -51,12 +44,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
             //}
         }
     }
-/*
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("Client " + ctx.channel().remoteAddress() + " connected");
-    }
-*/
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
@@ -69,7 +57,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
 
     public static void addChannel(Channel incoming, AuthResult authResult) {
         channels.add(incoming);
-        users.add(authResult);
+        usersHM.put(incoming, authResult.getLogin());
         for (Channel channel : channels) {
             if (channel != incoming) {
                 channel.writeAndFlush(new ServerMessage(new Date(), "Пользователь " + authResult.getNickName() + " присоединяется к беседе"));
@@ -78,11 +66,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
     }
 
     public static boolean isAuthUser(String login) {
-        for (AuthResult user : users) {
-            if (user.getLogin().equals(login)) {
-                return true;
-            }
-        }
-        return false;
+        return usersHM.contains(login);
     }
 }

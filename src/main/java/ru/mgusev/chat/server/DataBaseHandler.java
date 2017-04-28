@@ -50,8 +50,6 @@ public class DataBaseHandler {
             psAuthorisation.setString(1, authMessage.getLogin());
             psAuthorisation.setString(2, authMessage.getPassword());
             ResultSet authResultSet = psAuthorisation.executeQuery();
-            System.out.println("12345 " + authResultSet.getString(3));
-            System.out.println(!ChatServerHandler.isAuthUser(authResultSet.getString(3)));
             if (!ChatServerHandler.isAuthUser(authResultSet.getString(3))) return new AuthResult(authResultSet.getString(2), authResultSet.getString(3));
             else return new AuthResult(null, null);
         } catch (SQLException e) {
