@@ -6,8 +6,8 @@ public class StopPrintingMessage implements Serializable {
 
     private String nickName;
 
-    public StopPrintingMessage() {
-        this.nickName = "User1";
+    public StopPrintingMessage(String nickName) {
+        this.nickName = nickName;
     }
 
     public void setNickName(String nickName) {

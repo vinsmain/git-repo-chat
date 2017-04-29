@@ -9,6 +9,8 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import ru.mgusev.chat.client.model.AuthResult;
 import ru.mgusev.chat.client.model.ChatMessage;
 import ru.mgusev.chat.client.model.ServerMessage;
+import ru.mgusev.chat.client.model.StopPrintingMessage;
+
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,6 +28,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         String logoutUser = usersHM.get(ctx.channel());
         if (logoutUser != null) {
+            ChatServer.deleteElementToVector(new StopPrintingMessage(usersHM.get(ctx.channel())));
             channels.remove(ctx.channel());
             usersHM.remove(ctx.channel());
             for (Channel channel : channels) {
