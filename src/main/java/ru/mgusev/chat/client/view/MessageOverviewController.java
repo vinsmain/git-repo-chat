@@ -51,7 +51,7 @@ public class MessageOverviewController {
     private void startPrintingMessage() {
         time = System.currentTimeMillis();
         if (!isPrinting && isConnected) {
-            mainApp.getChatClient().getChannel().writeAndFlush(new StartPrintingMessage());
+            mainApp.getChatClient().getChannel().writeAndFlush(new StartPrintingMessage(mainApp.getNickName()));
             isPrinting = true;
         }
     }

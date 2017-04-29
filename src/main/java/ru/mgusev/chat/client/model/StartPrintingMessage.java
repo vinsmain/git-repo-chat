@@ -6,8 +6,8 @@ public class StartPrintingMessage implements Serializable {
 
     private String nickName;
 
-    public StartPrintingMessage() {
-        this.nickName = "User1";
+    public StartPrintingMessage(String nickName) {
+        this.nickName = nickName;
     }
 
     public void setNickName(String nickName) {

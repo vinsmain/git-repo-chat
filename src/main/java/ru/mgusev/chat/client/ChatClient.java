@@ -41,7 +41,7 @@ public class ChatClient {
             ScheduledFuture<?> future = channel.channel().eventLoop().scheduleAtFixedRate(
                 (Runnable) () -> {
                     if (MessageOverviewController.isPrinting() && System.currentTimeMillis() - MessageOverviewController.getTime() > 500 && MessageOverviewController.isConnected()) {
-                        chatClientFrame.getChatClient().getChannel().writeAndFlush(new StopPrintingMessage());
+                        chatClientFrame.getChatClient().getChannel().writeAndFlush(new StopPrintingMessage(chatClientFrame.getNickName()));
                         MessageOverviewController.setIsPrinting(false);
                     }
                 }, 100, 100, TimeUnit.MILLISECONDS);
