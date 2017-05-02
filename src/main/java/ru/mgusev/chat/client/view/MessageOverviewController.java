@@ -1,11 +1,15 @@
 package ru.mgusev.chat.client.view;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import ru.mgusev.chat.client.ChatClient;
 import ru.mgusev.chat.client.ChatClientFrame;
 import ru.mgusev.chat.client.model.AuthResult;
 import ru.mgusev.chat.client.model.ChatMessage;
+import ru.mgusev.chat.client.model.ServerMessage;
 import ru.mgusev.chat.client.model.StartPrintingMessage;
 import java.util.Date;
 
@@ -14,7 +18,7 @@ public class MessageOverviewController {
     @FXML
     private TextArea sendMessageArea = new TextArea();
     @FXML
-    private TextArea chatArea = new TextArea();
+    private TextFlow chatArea = new TextFlow();
     @FXML
     private TextField printingField = new TextField();
 
@@ -72,8 +76,31 @@ public class MessageOverviewController {
         return mainApp;
     }*/
 
-    public void printMessage(String message) {
-        chatArea.appendText(message + "\r\n");
+    public void printMessage(ChatMessage msg) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Text dateAndNick = new Text();
+                Text message = new Text();
+                if (mainApp.getNickName().equals(msg.getNickName())) dateAndNick.setStyle("-fx-fill: BLUE;-fx-font-weight:bold;");
+                else dateAndNick.setStyle("-fx-fill: RED;-fx-font-weight:bold;");
+                dateAndNick.setText("[" + msg.getDateTime() + "] " + msg.getNickName() + ": ");
+                message.setText(msg.getMessage() + "\r\n");
+                chatArea.getChildren().addAll(dateAndNick, message);
+            }
+        });
+    }
+
+    public void printServerMessage(ServerMessage serverMessage) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Text message = new Text();
+                message.setStyle("-fx-fill: BLACK;-fx-font-weight:bold;");
+                message.setText("[" + serverMessage.getServerDateTime() + "] " + serverMessage.getServerMessage() + "\r\n");
+                chatArea.getChildren().addAll(message);
+            }
+        });
     }
 
     public static void setIsConnected(boolean isConnected) {
