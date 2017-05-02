@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ru.mgusev.chat.client.view.AuthController;
 import ru.mgusev.chat.client.view.MessageOverviewController;
@@ -23,6 +24,7 @@ public class ChatClientFrame extends Application {
     private Pane registerFrame;
     private AnchorPane chatFrame;
     private String nickName;
+    private VBox usersListVBox;
     private boolean tryAuthOrReg = true; //true - auth, false - reg
     private static ChatClient chatClient;
     private static MessageOverviewController controller;
@@ -192,5 +194,9 @@ public class ChatClientFrame extends Application {
 
     public boolean isTryAuthOrReg() {
         return tryAuthOrReg;
+    }
+
+    public VBox getUsersListVBox() {
+        return usersListVBox;
     }
 }

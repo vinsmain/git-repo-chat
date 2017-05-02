@@ -20,5 +20,6 @@ public class ChatClientInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("handlerPrintingMessage", new ClientPrintingHandler());
         pipeline.addLast("handlerAuthHandler", new ClientAuthHandler());
         pipeline.addLast("handlerRegisterHandler", new ClientRegisterHandler());
+        pipeline.addLast("handlerUserListHandler", new UsersListHandler());
     }
 }

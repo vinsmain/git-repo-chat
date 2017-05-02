@@ -65,6 +65,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
             if (channel != incoming) {
                 channel.writeAndFlush(new ServerMessage(new Date(), "Пользователь " + authResult.getNickName() + " присоединяется к беседе"));
             }
+            channel.writeAndFlush(usersHM);
+            System.out.println("2");
         }
     }
 

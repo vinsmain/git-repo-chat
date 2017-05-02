@@ -1,13 +1,16 @@
 package ru.mgusev.chat.client.view;
 
+import io.netty.channel.Channel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import ru.mgusev.chat.client.ChatClient;
 import ru.mgusev.chat.client.ChatClientFrame;
 import ru.mgusev.chat.client.model.AuthResult;
 import ru.mgusev.chat.client.model.ChatMessage;
 import ru.mgusev.chat.client.model.StartPrintingMessage;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MessageOverviewController {
 
@@ -17,6 +20,8 @@ public class MessageOverviewController {
     private TextArea chatArea = new TextArea();
     @FXML
     private TextField printingField = new TextField();
+    @FXML
+    private VBox usersListVBox = new VBox();
 
     private ChatClientFrame mainApp;
     //private ChatClient chatClient;
@@ -98,5 +103,12 @@ public class MessageOverviewController {
 
     public static boolean isConnected() {
         return isConnected;
+    }
+
+    public void setUsersList(ConcurrentHashMap<Channel, String> usersList) {
+        mainApp.getUsersListVBox().getChildren().clear();
+        for (String value : usersList.values()) {
+            mainApp.getUsersListVBox().getChildren().add(new Label(value));
+        }
     }
 }
