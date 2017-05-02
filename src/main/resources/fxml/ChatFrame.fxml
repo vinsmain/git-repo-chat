@@ -6,6 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.text.TextFlow?>
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mgusev.chat.client.view.MessageOverviewController">
    <children>
       <SplitPane dividerPositions="0.29797979797979796" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -28,11 +29,11 @@
                <children>
                   <SplitPane dividerPositions="0.7536656891495601, 0.844574780058651, 0.5" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                        <TextArea fx:id="chatArea" editable="false" prefHeight="270.0" wrapText="true">
+                        <TextFlow fx:id="chatArea" prefHeight="270.0">
                            <cursor>
                               <Cursor fx:constant="TEXT" />
                            </cursor>
-                        </TextArea>
+                        </TextFlow>
                         <TextField fx:id="printingField" editable="false">
                            <cursor>
                               <Cursor fx:constant="DEFAULT" />
