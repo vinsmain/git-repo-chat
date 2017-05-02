@@ -8,6 +8,6 @@ public class ServerMassageHandler extends SimpleChannelInboundHandler<ServerMess
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ServerMessage msg) throws Exception {
-        ChatClientFrame.getController().printMessage("[" + msg.getServerDateTime() + "] " + msg.getServerMessage());
+        ChatClientFrame.getController().printServerMessage(msg);
     }
 }

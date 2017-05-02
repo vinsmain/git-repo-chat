@@ -8,6 +8,6 @@ public class ClientMessageHandler extends SimpleChannelInboundHandler<ChatMessag
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ChatMessage msg) throws Exception {
-        ChatClientFrame.getController().printMessage("[" + msg.getDateTime() + "] " + msg.getNickName() + ": " + msg.getMessage());
+        ChatClientFrame.getController().printMessage(msg);
     }
 }
