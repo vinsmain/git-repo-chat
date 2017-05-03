@@ -6,10 +6,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import ru.mgusev.chat.client.model.AuthResult;
-import ru.mgusev.chat.client.model.ChatMessage;
-import ru.mgusev.chat.client.model.ServerMessage;
-import ru.mgusev.chat.client.model.StopPrintingMessage;
+import ru.mgusev.chat.client.model.*;
 
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-    private static ConcurrentHashMap<Channel, String> usersHM= new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Channel, String> usersHM = new ConcurrentHashMap<>();
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
@@ -33,6 +30,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
             usersHM.remove(ctx.channel());
             for (Channel channel : channels) {
                 channel.writeAndFlush(new ServerMessage(new Date(), "Пользователь " + logoutUser + " отключается"));
+                channel.writeAndFlush(usersHM);
+                System.out.println(usersHM);
             }
         }
     }
@@ -65,8 +64,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
             if (channel != incoming) {
                 channel.writeAndFlush(new ServerMessage(new Date(), "Пользователь " + authResult.getNickName() + " присоединяется к беседе"));
             }
-            channel.writeAndFlush(usersHM);
-            System.out.println("2");
+            channel.writeAndFlush(new UsersListMessage(usersHM));
+            System.out.println(usersHM);
         }
     }
 
