@@ -3,15 +3,17 @@ package ru.mgusev.chat.client.view;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.application.Platform;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import ru.mgusev.chat.client.ChatClient;
 import ru.mgusev.chat.client.ChatClientFrame;
-import ru.mgusev.chat.client.model.AuthResult;
 import ru.mgusev.chat.client.model.ChatMessage;
 import ru.mgusev.chat.client.model.ServerMessage;
 import ru.mgusev.chat.client.model.StartPrintingMessage;
 import java.util.Date;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MessageOverviewController {
 
@@ -21,9 +23,10 @@ public class MessageOverviewController {
     private TextFlow chatArea = new TextFlow();
     @FXML
     private TextField printingField = new TextField();
+    @FXML
+    private VBox usersListVBox = new VBox();
 
     private ChatClientFrame mainApp;
-    //private ChatClient chatClient;
     private static boolean isConnected = false;
     private static long time = System.currentTimeMillis();
     private static boolean isPrinting = false;
@@ -125,5 +128,17 @@ public class MessageOverviewController {
 
     public static boolean isConnected() {
         return isConnected;
+    }
+
+    public void setUsersList(CopyOnWriteArrayList<String> usersList) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                usersListVBox.getChildren().clear();
+                for (String value : usersList) {
+                    usersListVBox.getChildren().add(new Label(value));
+                }
+            }
+        });
     }
 }

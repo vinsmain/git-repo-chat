@@ -36,8 +36,6 @@ public class ChatClientFrame extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Chat");
 
-        //connect();
-
         initRootLayout();
         initAuthFrame();
         initRegisterFrame();
@@ -64,7 +62,6 @@ public class ChatClientFrame extends Application {
                         @Override
                         protected Void call() throws Exception {
                             chatClient = new ChatClient("localhost", 8000, authController.getMainApp());
-                            //ChatClientFrame.setChatClient(chatClient);
                             chatClient.run();
                             return null;
                         }
@@ -136,10 +133,6 @@ public class ChatClientFrame extends Application {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
-
-    /*public ObservableList<ChatMessage> getPersonData() {
-        return messageData;
-    }*/
 
     public static MessageOverviewController getController() {
         return controller;
