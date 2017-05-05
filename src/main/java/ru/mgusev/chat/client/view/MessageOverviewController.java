@@ -1,11 +1,13 @@
 package ru.mgusev.chat.client.view;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.application.Platform;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import ru.mgusev.chat.client.ChatClient;
 import ru.mgusev.chat.client.ChatClientFrame;
 import ru.mgusev.chat.client.model.ChatMessage;
 import ru.mgusev.chat.client.model.ServerMessage;
