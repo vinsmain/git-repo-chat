@@ -4,14 +4,14 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.application.Platform;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import ru.mgusev.chat.client.ChatClient;
 import ru.mgusev.chat.client.ChatClientFrame;
 import ru.mgusev.chat.client.model.ChatMessage;
 import ru.mgusev.chat.client.model.ServerMessage;
 import ru.mgusev.chat.client.model.StartPrintingMessage;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -30,6 +30,7 @@ public class MessageOverviewController {
     private static boolean isConnected = false;
     private static long time = System.currentTimeMillis();
     private static boolean isPrinting = false;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy");
 
     public void setMainApp(ChatClientFrame mainApp) {
         this.mainApp = mainApp;
@@ -87,7 +88,7 @@ public class MessageOverviewController {
                 Text message = new Text();
                 if (mainApp.getNickName().equals(msg.getNickName())) dateAndNick.setStyle("-fx-fill: BLUE;-fx-font-weight:bold;");
                 else dateAndNick.setStyle("-fx-fill: RED;-fx-font-weight:bold;");
-                dateAndNick.setText("[" + msg.getDateTime() + "] " + msg.getNickName() + ": ");
+                dateAndNick.setText("[" + dateFormat.format(msg.getDateTime()) + "] " + msg.getNickName() + ": ");
                 message.setText(msg.getMessage() + "\r\n");
                 chatArea.getChildren().addAll(dateAndNick, message);
             }
@@ -100,7 +101,7 @@ public class MessageOverviewController {
             public void run() {
                 Text message = new Text();
                 message.setStyle("-fx-fill: BLACK;-fx-font-weight:bold;");
-                message.setText("[" + serverMessage.getServerDateTime() + "] " + serverMessage.getServerMessage() + "\r\n");
+                message.setText("[" + dateFormat.format(serverMessage.getServerDateTime()) + "] " + serverMessage.getServerMessage() + "\r\n");
                 chatArea.getChildren().addAll(message);
             }
         });
