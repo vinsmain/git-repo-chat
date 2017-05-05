@@ -1,20 +1,17 @@
 package ru.mgusev.chat.client.model;
 
-import io.netty.channel.Channel;
 import java.io.Serializable;
-import java.util.concurrent.ConcurrentHashMap;
-
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class UsersListMessage implements Serializable {
 
-    private ConcurrentHashMap<Channel, String> usersHM;
+    private CopyOnWriteArrayList<String> usersList;
 
-    public UsersListMessage(ConcurrentHashMap<Channel, String> usersHM) {
-        this.usersHM = usersHM;
-        System.out.println(this.usersHM);
+    public UsersListMessage(CopyOnWriteArrayList<String> usersList) {
+        this.usersList = usersList;
     }
 
-    public ConcurrentHashMap<Channel, String> getUsersHM() {
-        return usersHM;
+    public CopyOnWriteArrayList<String> getUsersList() {
+        return usersList;
     }
 }

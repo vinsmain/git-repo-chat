@@ -1,6 +1,5 @@
 package ru.mgusev.chat.client.view;
 
-import io.netty.channel.Channel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -12,7 +11,7 @@ import ru.mgusev.chat.client.model.ChatMessage;
 import ru.mgusev.chat.client.model.ServerMessage;
 import ru.mgusev.chat.client.model.StartPrintingMessage;
 import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MessageOverviewController {
 
@@ -26,7 +25,6 @@ public class MessageOverviewController {
     private VBox usersListVBox = new VBox();
 
     private ChatClientFrame mainApp;
-    //private ChatClient chatClient;
     private static boolean isConnected = false;
     private static long time = System.currentTimeMillis();
     private static boolean isPrinting = false;
@@ -130,10 +128,15 @@ public class MessageOverviewController {
         return isConnected;
     }
 
-    public void setUsersList(ConcurrentHashMap<Channel, String> usersList) {
-        mainApp.getUsersListVBox().getChildren().clear();
-        for (String value : usersList.values()) {
-            mainApp.getUsersListVBox().getChildren().add(new Label(value));
-        }
+    public void setUsersList(CopyOnWriteArrayList<String> usersList) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                usersListVBox.getChildren().clear();
+                for (String value : usersList) {
+                    usersListVBox.getChildren().add(new Label(value));
+                }
+            }
+        });
     }
 }

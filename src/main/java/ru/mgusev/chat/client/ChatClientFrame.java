@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ru.mgusev.chat.client.view.AuthController;
 import ru.mgusev.chat.client.view.MessageOverviewController;
@@ -24,7 +23,6 @@ public class ChatClientFrame extends Application {
     private Pane registerFrame;
     private AnchorPane chatFrame;
     private String nickName;
-    private VBox usersListVBox;
     private boolean tryAuthOrReg = true; //true - auth, false - reg
     private static ChatClient chatClient;
     private static MessageOverviewController controller;
@@ -37,8 +35,6 @@ public class ChatClientFrame extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Chat");
-
-        //connect();
 
         initRootLayout();
         initAuthFrame();
@@ -66,7 +62,6 @@ public class ChatClientFrame extends Application {
                         @Override
                         protected Void call() throws Exception {
                             chatClient = new ChatClient("localhost", 8000, authController.getMainApp());
-                            //ChatClientFrame.setChatClient(chatClient);
                             chatClient.run();
                             return null;
                         }
@@ -139,10 +134,6 @@ public class ChatClientFrame extends Application {
         return primaryStage;
     }
 
-    /*public ObservableList<ChatMessage> getPersonData() {
-        return messageData;
-    }*/
-
     public static MessageOverviewController getController() {
         return controller;
     }
@@ -194,9 +185,5 @@ public class ChatClientFrame extends Application {
 
     public boolean isTryAuthOrReg() {
         return tryAuthOrReg;
-    }
-
-    public VBox getUsersListVBox() {
-        return usersListVBox;
     }
 }
