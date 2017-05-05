@@ -1,5 +1,6 @@
 package ru.mgusev.chat.server;
 
+import org.mindrot.jbcrypt.BCrypt;
 import ru.mgusev.chat.client.model.AuthMessage;
 import ru.mgusev.chat.client.model.AuthResult;
 import ru.mgusev.chat.client.model.RegisterMessage;
@@ -35,7 +36,7 @@ public class DataBaseHandler {
         try {
             psRegistration.setString(1, registerMessage.getNickName());
             psRegistration.setString(2, registerMessage.getLogin());
-            psRegistration.setString(3, registerMessage.getPassword());
+            psRegistration.setString(3, BCrypt.hashpw(registerMessage.getPassword(), BCrypt.gensalt(12)));
             psRegistration.executeUpdate();
             return new RegisterResult(true, "Пользователь " + registerMessage.getNickName() + " успешно зарегистрирован");
         } catch (SQLException e) {
@@ -48,7 +49,7 @@ public class DataBaseHandler {
     public static AuthResult authorisation(AuthMessage authMessage) {
         try {
             psAuthorisation.setString(1, authMessage.getLogin());
-            psAuthorisation.setString(2, authMessage.getPassword());
+            psAuthorisation.setString(2, BCrypt.hashpw(authMessage.getPassword(), BCrypt.gensalt(12)));
             ResultSet authResultSet = psAuthorisation.executeQuery();
             if (!ChatServerHandler.isAuthUser(authResultSet.getString(3))) return new AuthResult(authResultSet.getString(2), authResultSet.getString(3));
             else return new AuthResult(null, null);
