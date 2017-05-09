@@ -24,7 +24,7 @@ public class DataBaseHandler {
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Users (UserID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, NickName TEXT UNIQUE NOT NULL, Login TEXT UNIQUE NOT NULL, Password TEXT NOT NULL)");
             psRegistration = conn.prepareStatement("INSERT INTO Users(NickName, Login, Password) VALUES(?, ?, ?)");
             /*psUpdate = conn.prepareStatement("UPDATE Students SET Score= ? WHERE Name = ?");*/
-            psAuthorisation = conn.prepareStatement("SELECT * FROM Users WHERE Login = ? AND Password = ?");
+            psAuthorisation = conn.prepareStatement("SELECT * FROM Users WHERE Login = ?");
             /*psDelete = conn.prepareStatement("DELETE FROM Students WHERE Name = ?");*/
         } catch (Exception e) {
             System.out.println("Ошибка инициализации JDBC драйвера");
@@ -49,9 +49,9 @@ public class DataBaseHandler {
     public static AuthResult authorisation(AuthMessage authMessage) {
         try {
             psAuthorisation.setString(1, authMessage.getLogin());
-            psAuthorisation.setString(2, BCrypt.hashpw(authMessage.getPassword(), BCrypt.gensalt(12)));
             ResultSet authResultSet = psAuthorisation.executeQuery();
-            if (!ChatServerHandler.isAuthUser(authResultSet.getString(3))) return new AuthResult(authResultSet.getString(2), authResultSet.getString(3));
+            Boolean passwordVerified = BCrypt.checkpw(authMessage.getPassword(), authResultSet.getString(4));
+            if (passwordVerified && !ChatServerHandler.isAuthUser(authResultSet.getString(3))) return new AuthResult(authResultSet.getString(2), authResultSet.getString(3));
             else return new AuthResult(null, null);
         } catch (SQLException e) {
             disconnect();
