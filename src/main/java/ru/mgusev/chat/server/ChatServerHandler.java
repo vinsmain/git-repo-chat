@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> {
 
     private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-    private static final ConcurrentHashMap<Channel, String> usersHM = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Channel, AuthResult> usersHM = new ConcurrentHashMap<>();
     private static final CopyOnWriteArrayList<String> usersList = new CopyOnWriteArrayList<>();
 
     @Override
@@ -24,9 +24,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        String logoutUser = usersHM.get(ctx.channel());
+        String logoutUser = usersHM.get(ctx.channel()).getNickName();
         if (logoutUser != null) {
-            ChatServer.deleteElementToVector(new StopPrintingMessage(usersHM.get(ctx.channel())));
+            ChatServer.deleteElementToVector(new StopPrintingMessage((usersHM.get(ctx.channel()).getNickName())));
             channels.remove(ctx.channel());
             usersHM.remove(ctx.channel());
             usersList.remove(logoutUser);
@@ -60,8 +60,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
 
     public static void addChannel(Channel incoming, AuthResult authResult) {
         channels.add(incoming);
-        usersHM.put(incoming, authResult.getLogin());
-        usersList.add(authResult.getLogin());
+        usersHM.put(incoming, authResult);
+        usersList.add(authResult.getNickName());
         usersList.sort((o1, o2) -> o1.compareTo(o2));
         for (Channel channel : channels) {
             if (channel != incoming) {
