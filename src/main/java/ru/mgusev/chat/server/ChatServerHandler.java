@@ -23,17 +23,20 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
     }
 
     @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        String logoutUser = usersHM.get(ctx.channel()).getNickName();
-        if (logoutUser != null) {
-            ChatServer.deleteElementToVector(new StopPrintingMessage((usersHM.get(ctx.channel()).getNickName())));
+    public void handlerRemoved(ChannelHandlerContext ctx) {
+        try {
+            String logoutUser = usersHM.get(ctx.channel()).getNickName();
+            ChatServer.removePrintingUser(new StopPrintingMessage((usersHM.get(ctx.channel()).getNickName())));
             channels.remove(ctx.channel());
             usersHM.remove(ctx.channel());
             usersList.remove(logoutUser);
+            System.out.println(new Date() + " Пользователь " + logoutUser + " отключается");
             for (Channel channel : channels) {
                 channel.writeAndFlush(new ServerMessage(new Date(), "Пользователь " + logoutUser + " отключается"));
                 channel.writeAndFlush(new UsersListMessage(usersList));
             }
+        } catch (NullPointerException e) {
+            System.out.println(new Date() + " Неавторизованный пользователь " + ctx.channel().remoteAddress() + " отключается");
         }
     }
 
@@ -65,7 +68,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<ChatMessage> 
         usersList.sort((o1, o2) -> o1.compareTo(o2));
         for (Channel channel : channels) {
             if (channel != incoming) {
-                channel.writeAndFlush(new ServerMessage(new Date(), "Пользователь " + authResult.getNickName() + " присоединяется к беседе"));
+                channel.writeAndFlush(new ServerMessage(new Date(), "Пользователь " + authResult.getNickName() + " присоединяется к чату"));
             }
             channel.writeAndFlush(new UsersListMessage(usersList));
         }

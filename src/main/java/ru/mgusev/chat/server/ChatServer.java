@@ -7,7 +7,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import ru.mgusev.chat.client.model.StartPrintingMessage;
 import ru.mgusev.chat.client.model.StopPrintingMessage;
-import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +18,7 @@ public class ChatServer {
     }
 
     private final int port;
-    private static Vector<StartPrintingMessage> printingUsersArray = new Vector<>();
+    private static CopyOnWriteArrayList<StartPrintingMessage> printingUsersArray = new CopyOnWriteArrayList<>();
     private static boolean arrayIsChange = false;
 
     public ChatServer(int port) {
@@ -57,12 +57,12 @@ public class ChatServer {
         }
     }
 
-    public static void addElementToVector(StartPrintingMessage msg) {
+    public static void addPrintingUser(StartPrintingMessage msg) {
         printingUsersArray.add(msg);
         arrayIsChange = true;
     }
 
-    public static void deleteElementToVector(StopPrintingMessage msg) {
+    public static void removePrintingUser(StopPrintingMessage msg) {
         int index = -1;
         for (StartPrintingMessage startPrintingMessage : printingUsersArray) {
             if (startPrintingMessage.getNickName().equals(msg.getNickName())) {

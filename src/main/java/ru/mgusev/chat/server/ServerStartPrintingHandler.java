@@ -8,6 +8,6 @@ public class ServerStartPrintingHandler extends SimpleChannelInboundHandler<Star
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, StartPrintingMessage msg) throws Exception {
-        ChatServer.addElementToVector(msg);
+        ChatServer.addPrintingUser(msg);
     }
 }
