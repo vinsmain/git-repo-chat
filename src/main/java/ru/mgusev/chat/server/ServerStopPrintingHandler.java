@@ -8,6 +8,6 @@ public class ServerStopPrintingHandler extends SimpleChannelInboundHandler<StopP
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, StopPrintingMessage msg) throws Exception {
-        ChatServer.deleteElementToVector(msg);
+        ChatServer.removePrintingUser(msg);
     }
 }
