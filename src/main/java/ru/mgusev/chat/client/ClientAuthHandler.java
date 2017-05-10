@@ -6,7 +6,11 @@ import ru.mgusev.chat.client.model.AuthResult;
 
 public class ClientAuthHandler extends SimpleChannelInboundHandler<AuthResult> {
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, AuthResult authResult) throws Exception {
-        ChatClientFrame.getAuthController().authorisation(authResult);
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, AuthResult authResult) {
+        try {
+            ChatClientFrame.getAuthController().authorisation(authResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

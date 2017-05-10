@@ -10,6 +10,7 @@ import ru.mgusev.chat.client.ChatClientFrame;
 import ru.mgusev.chat.client.model.ChatMessage;
 import ru.mgusev.chat.client.model.ServerMessage;
 import ru.mgusev.chat.client.model.StartPrintingMessage;
+import ru.mgusev.chat.client.model.UsersListMessage;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,8 +65,31 @@ public class MessageOverviewController {
         }
     }
 
-    public void setPrintingField(String message) {
-        printingField.setText(message);
+    public void setPrintingField(CopyOnWriteArrayList<StartPrintingMessage> msg) {
+        try {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    String resultPrintingMessage = "";
+                    if (msg.isEmpty()) {
+                        resultPrintingMessage = "";
+                    } else if (msg.size() == 1) {
+                        resultPrintingMessage = msg.get(0).getNickName() + " печатает сообщение...";
+                    } else if (msg.size() < 5) {
+                        for (StartPrintingMessage printingMessage: msg) {
+                            if (msg.indexOf(printingMessage) < msg.size() - 1) {
+                                resultPrintingMessage += printingMessage.getNickName() + ", ";
+                            } else resultPrintingMessage += printingMessage.getNickName();
+                        }
+                        resultPrintingMessage += " печатают сообщение...";
+                    } else resultPrintingMessage = msg.size() + " пользователей печатают сообщение...";
+
+                    printingField.setText(resultPrintingMessage);
+                }
+            });
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
     }
 /*
     public void setChatClient(ChatClient chatClient) {
@@ -132,14 +156,24 @@ public class MessageOverviewController {
     }
 
     public void setUsersList(CopyOnWriteArrayList<String> usersList) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                usersListVBox.getChildren().clear();
-                for (String value : usersList) {
-                    usersListVBox.getChildren().add(new Label(value));
+        try {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    usersListVBox.getChildren().clear();
+                    for (String value : usersList) {
+                        try {
+                            usersListVBox.getChildren().add(new Label(value));
+                        } catch (Exception e) {
+                            System.out.println("222");
+                            e.printStackTrace();
+                        }
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            System.out.println("222");
+            e.printStackTrace();
+        }
     }
 }

@@ -57,18 +57,22 @@ public class AuthController {
     }
 
     public void authorisation(AuthResult authResult) {
-        if (authResult.getNickName() != null) {
-            mainApp.setNickName(authResult.getNickName());
-            mainApp.setMainFrame(mainApp.getChatFrame());
-            if (rememberCB.isSelected()) {
-                passwordField.clear();
-                errorLabel.setText("");
-            } else clearFields();
-        } else {
-            mainApp.getChatClient().getChannel().disconnect();
-            MessageOverviewController.setIsConnected(false);
-            setErrorLabel("Неверные данные для авторизации");
-            disableElements(false);
+        try {
+            if (authResult.getNickName() != null) {
+                mainApp.setNickName(authResult.getNickName());
+                mainApp.setMainFrame(mainApp.getChatFrame());
+                if (rememberCB.isSelected()) {
+                    passwordField.clear();
+                    errorLabel.setText("");
+                } else clearFields();
+            } else {
+                mainApp.getChatClient().getChannel().disconnect();
+                MessageOverviewController.setIsConnected(false);
+                setErrorLabel("Неверные данные для авторизации");
+                disableElements(false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
